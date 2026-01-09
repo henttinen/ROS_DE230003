@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <robot>
     <gazebo reference="sensor_link">
-        <material>Gazebo/Blue</material>
         <sensor type="gpu_lidar" name="sonar_sensor">
             <pose relative_to="sensor_link">0 0 0 0 0 0</pose>
             <topic>scan</topic>

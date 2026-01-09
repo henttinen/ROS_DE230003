@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<robot name="geom_demo" 
+    xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- https://en.wikipedia.org/wiki/List_of_moments_of_inertia#List_of_3D_inertia_tensors -->
+
+    <xacro:property name="dens_alu" value="2712" />
+    <!-- kg/m^3 -->
+
+    <!-- CUBOID -->
+    <xacro:property name="cuboid_x" value="0.1" />
+    <!-- X direction -->
+    <xacro:property name="cuboid_y" value="0.1" />
+    <!-- Y direction -->
+    <xacro:property name="cuboid_z" value="0.1" />
+    <!-- Z direction -->
+
+    <xacro:property name="cuboid_m" value="${dens_alu * cuboid_x * cuboid_y * cuboid_z}" />
+
+    <xacro:property name="cuboid_Ix" value="${(1/12) * cuboid_m * (pow(cuboid_y,2) + pow(cuboid_z,2))}" />
+    <xacro:property name="cuboid_Iy" value="${(1/12) * cuboid_m * (pow(cuboid_x,2) + pow(cuboid_z,2))}" />
+    <xacro:property name="cuboid_Iz" value="${(1/12) * cuboid_m * (pow(cuboid_x,2) + pow(cuboid_y,2))}" />
+
+    <link name="cuboid">
+        <visual>
+            <origin xyz="0 0 ${cuboid_z/2}" rpy="0 0 0" />
+            <geometry>
+                <box size="${cuboid_x} ${cuboid_y} ${cuboid_z}" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 0 ${cuboid_z/2}" rpy="0 0 0" />
+            <geometry>
+                <box size="${cuboid_x} ${cuboid_y} ${cuboid_z}" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="${cuboid_m}" />
+            <inertia ixx="${cuboid_Ix}" ixy="0.0" ixz="0.0" iyy="${cuboid_Iy}" iyz="0.0" izz="${cuboid_Iz}" />
+        </inertial>
+    </link>
+
+    <!-- CYLINDER -->
+    <xacro:property name="cylinder_r" value="0.05" />
+    <xacro:property name="cylinder_z" value="0.1" />
+
+    <xacro:property name="cylinder_m" value="${dens_alu * pi * pow(cylinder_r,2) * cylinder_z}" />
+
+    <xacro:property name="cylinder_Ix" value="${(1/12) * cylinder_m * ( 3 * pow(cylinder_r,2) + pow(cylinder_z,2) )}" />
+    <xacro:property name="cylinder_Iy" value="${cylinder_Ix}" />
+    <xacro:property name="cylinder_Iz" value="${(1/2) * cylinder_m * pow(cylinder_r,2)}" />
+
+    <link name="cylinder">
+        <visual>
+            <origin xyz="0 ${cuboid_y} ${cylinder_z/2}" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="${cylinder_r}" length="${cylinder_z}" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 ${cuboid_y} ${cylinder_z/2}" rpy="0 0 0" />
+            <geometry>
+                <cylinder radius="${cylinder_r}" length="${cylinder_z}" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="${cylinder_m}" />
+            <inertia ixx="${cylinder_Ix}" ixy="0.0" ixz="0.0" iyy="${cylinder_Iy}" iyz="0.0" izz="${cylinder_Iz}" />
+        </inertial>
+    </link>
+
+    <!-- SPHERE -->
+    <xacro:property name="sphere_r" value="0.05" />
+    <xacro:property name="sphere_m" value="${ dens_alu * (4/3) * pi * pow(sphere_r,3)}" />
+    <xacro:property name="sphere_I" value="${ (2/5) * sphere_m * pow(sphere_r,2) }" />
+
+    <link name="sphere">
+        <visual>
+            <origin xyz="0 -${cuboid_y} ${sphere_r}" rpy="0 0 0" />
+            <geometry>
+                <sphere radius="${sphere_r}" />
+            </geometry>
+        </visual>
+        <collision>
+            <origin xyz="0 -${cuboid_y} ${sphere_r}" rpy="0 0 0" />
+            <geometry>
+                <sphere radius="${sphere_r}" />
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="${sphere_m}" />
+            <inertia ixx="${sphere_I}" ixy="0.0" ixz="0.0" iyy="${sphere_I}" iyz="0.0" izz="${sphere_I}" />
+        </inertial>
+    </link>
+</robot>

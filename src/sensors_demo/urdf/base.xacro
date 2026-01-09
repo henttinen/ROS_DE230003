@@ -21,15 +21,11 @@
     
     <!-- We can include other xacro or URDF files -->
     <xacro:include filename="$(find sensors_demo)/urdf/materials.xacro" />
-    <!-- <xacro:include filename="$(find sensors_demo)/urdf/sonar.gazebo" /> -->
-    <xacro:include filename="$(find sensors_demo)/urdf/lidar.gazebo" />
+    <xacro:include filename="$(find sensors_demo)/urdf/sonar.gazebo" />
+    <!-- <xacro:include filename="$(find sensors_demo)/urdf/lidar.gazebo" /> -->
 
     <!-- Rviz/Gazebo does not like the first link having mass or inertia, so a dummy link is created -->
     <link name="root" />
-
-    <gazebo reference="base_link">
-        <material>Gazebo/RedBright</material>
-    </gazebo>
 
     <link name="base_link">
         <visual>
